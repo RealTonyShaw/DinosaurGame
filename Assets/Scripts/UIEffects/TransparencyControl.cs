@@ -26,7 +26,7 @@ public class TransparencyControl : MonoBehaviour
 
     void Update()
     {
-        if (Time.time > startTime)
+        if (Time.timeSinceLevelLoad > startTime)
         {
             if (alpha != cg.alpha)
             {
