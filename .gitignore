@@ -62,5 +62,8 @@ sysinfo.txt
 *.doc
 *.docx
 
+# Mac
+.DS_Store
+
 # Crashlytics generated file
 crashlytics-build.properties
