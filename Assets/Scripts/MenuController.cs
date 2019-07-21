@@ -5,9 +5,9 @@
  */
 public class MenuController : MonoBehaviour
 {
-  /*
-   * When the start button is pressed, load the Game scene.
-   */
+    /*
+     * When the start button is pressed, load the Game scene.
+     */
   public void OnStartClicked()
   {
     Application.LoadLevel("Game");
