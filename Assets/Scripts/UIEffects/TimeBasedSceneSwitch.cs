@@ -13,7 +13,7 @@ public class TimeBasedSceneSwitch : MonoBehaviour
     {
         if (Time.time > switchTime)
         {
-            Application.LoadLevel(sceneName);
+            SceneManager.LoadScene(sceneName);
         }
     }
 }
