@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/*
- * Small behaviour to handle menu button callbacks.
- */
+/// <summary>
+/// For loading different scenes and quiting the game
+/// Written for buttons
+/// </summary>
 public class MenuController : MonoBehaviour
 {
-    /*
-     * When the start button is pressed, load the Game scene.
-     */
+    /// <summary>
+    /// When the button is pressed, load the Game scene.
+    /// </summary>
     public void OnStartClicked()
     {
         Debug.Log("Detected");
@@ -16,12 +17,19 @@ public class MenuController : MonoBehaviour
         // Application.LoadLevel("Game");
     }
 
-    /*
-     * When the back button is clicked, load the Menu scene.
-     */
+    /// <summary>
+    /// When the button is clicked, load the Menu scene.
+    /// </summary>
     public void OnBackClicked()
     {
         SceneManager.LoadScene("Menu");
-        //Application.LoadLevel("Menu");
+    }
+
+    /// <summary>
+    /// When the button is pressed, quit the game.
+    /// </summary>
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
