@@ -13,8 +13,12 @@ public class PlayerController : MonoBehaviour
     public Animation AnimationPlayer;
     public AnimationClip hitGroundAnim;
     public AnimationClip jumpAnim;
-    public float AdditionalJumpForceBonus = 0.5f;
-    public float MaxBonusTime = 0.5f;
+    public float AdditionalJumpForceBonus = 1f;
+    public float MaxBonusTime = 1f;
+    public float Torque = 10f;
+    public float Force = 100f;
+    // 玩家与地面允许的最大角度（超过则判为死亡）
+    public const float MAX_SLIP_ANGLE = 75f;
 
     /*
      * Apply initial health and also store the Rigidbody2D reference for
@@ -42,6 +46,18 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadSceneAsync("EndGame");
         }
     }
+    public void Damage(int damage)
+    {
+        health -= damage;
+
+        if (health < 1)
+        {
+            // This method is deprecated.
+            //Application.LoadLevel("EndGame");
+            // Use SceneManager instead.
+            SceneManager.LoadSceneAsync("EndGame");
+        }
+    }
 
     /*
      * Accessor for health variable, used by he HUD to display health.
@@ -57,6 +73,16 @@ public class PlayerController : MonoBehaviour
     {
         if (canJump)
         {
+            //if (ground != null)
+            //{
+            //    //rigidbody2d.AddForce(Input.GetAxis("Horizontal") * Force * transform.right);
+            //    if (Vector2.Angle(ground.transform.up, transform.up) > MAX_SLIP_ANGLE)
+            //    {
+            //        Debug.Log("Angle " + Vector2.Angle(ground.transform.up, transform.up));
+            //        Damage(10000);
+            //        return;
+            //    }
+            //}
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 pressedTime = Time.time;
@@ -65,7 +91,10 @@ public class PlayerController : MonoBehaviour
             {
                 Jump();
             }
+
         }
+
+        rigidbody2d.AddTorque(-Input.GetAxis("Horizontal") * Torque);
     }
 
     /*
@@ -74,12 +103,24 @@ public class PlayerController : MonoBehaviour
      */
     private void OnCollisionEnter2D(Collision2D other)
     {
-        HitGround();
+        HitGround(other);
     }
 
-    // 角色落到地面
-    private void HitGround()
+    private void OnTriggerEnter2D(Collider2D other)
     {
+        // Layer == Terrian
+        if (other.gameObject.layer == 0x8)
+        {
+            Damage(10000);
+        }
+    }
+    
+    GameObject ground;
+
+    // 角色落到地面
+    private void HitGround(Collision2D other)
+    {
+        pressedTime = Time.time;
         PlayAnim(hitGroundAnim);
         canJump = true;
     }
@@ -87,6 +128,7 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         float bonus = AdditionalJumpForceBonus * Mathf.Clamp01((Time.time - pressedTime) / MaxBonusTime);
+        Debug.Log(string.Format("Time {0} with bonus {1}%", Time.time - pressedTime, bonus * 100));
         rigidbody2d.AddForce(new Vector2(0, 500 * (1 + bonus)));
         PlayAnim(jumpAnim);
         canJump = false;
