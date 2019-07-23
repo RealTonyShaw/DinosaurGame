@@ -14,7 +14,7 @@ public class PlayerCollider : MonoBehaviour
   {
     // Obtain a reference to the Player's PlayerController
     PlayerController playerController =
-      other.gameObject.GetComponent<PlayerController>();
+      other.attachedRigidbody.gameObject.GetComponent<PlayerController>();
 
     // Register damage with player
     playerController.Damage();
