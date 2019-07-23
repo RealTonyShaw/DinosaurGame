@@ -6,12 +6,20 @@
  */
 public class SectionScroller : MonoBehaviour
 {
-  /*
-   * Use the Transform component attached to the section game object and
-   * translate it based on delta time.
-   */
-  private void Update()
-  {
-    transform.Translate(new Vector2(-10, 0) * Time.deltaTime);
-  }
+    public AnimationCurve Speed;
+    public float currentSpeed;
+    float startTime = 0f;
+    private void Start()
+    {
+        startTime = Time.time;
+    }
+    /*
+     * Use the Transform component attached to the section game object and
+     * translate it based on delta time.
+     */
+    private void Update()
+    {
+        currentSpeed = Speed.Evaluate(Time.time - startTime);
+        transform.Translate(currentSpeed * Vector2.left * Time.deltaTime);
+    }
 }
