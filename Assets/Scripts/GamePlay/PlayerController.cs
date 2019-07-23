@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     public float MaxBonusTime = 1f;
     public float Torque = 10f;
     public float Force = 100f;
+    public float DampedDrag = 0.5f;
+
+    public AnimationCurve ChargingBonus;
     // 玩家与地面允许的最大角度（超过则判为死亡）
     public const float MAX_SLIP_ANGLE = 75f;
 
@@ -94,7 +97,14 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        rigidbody2d.AddTorque(-Input.GetAxis("Horizontal") * Torque);
+    }
+
+    private void FixedUpdate()
+    {
+        float torque = -Input.GetAxis("Horizontal") * Torque;
+        Debug.Log("Torque is " + torque);
+        rigidbody2d.AddTorque(torque, ForceMode2D.Force);
+        RestrainXAxis(Time.fixedDeltaTime);
     }
 
     /*
@@ -114,24 +124,27 @@ public class PlayerController : MonoBehaviour
             Damage(10000);
         }
     }
-    
+
     GameObject ground;
 
     // 角色落到地面
     private void HitGround(Collision2D other)
     {
-        pressedTime = Time.time;
-        PlayAnim(hitGroundAnim);
-        canJump = true;
+        if (!canJump)
+        {
+            PlayAnim(hitGroundAnim);
+            pressedTime = Time.time;
+            canJump = true;
+        }
     }
     // 角色起跳，起跳前长按有额外加成
     private void Jump()
     {
-        float bonus = AdditionalJumpForceBonus * Mathf.Clamp01((Time.time - pressedTime) / MaxBonusTime);
+        canJump = false;
+        float bonus = ChargingBonus.Evaluate(Time.time - pressedTime);
         Debug.Log(string.Format("Time {0} with bonus {1}%", Time.time - pressedTime, bonus * 100));
         rigidbody2d.AddForce(new Vector2(0, 500 * (1 + bonus)));
         PlayAnim(jumpAnim);
-        canJump = false;
     }
     // 长按增加角色跳跃力度
 
@@ -143,5 +156,17 @@ public class PlayerController : MonoBehaviour
         }
         AnimationPlayer.clip = clip;
         AnimationPlayer.Play();
+    }
+
+    void RestrainXAxis(float dt)
+    {
+        Vector3 target = transform.position;
+        target.x = 0f;
+        transform.position = Vector3.Lerp(transform.position, target, 3f * dt);
+        target = -rigidbody2d.velocity;
+        target.y = 0f;
+        target.z = 0f;
+        rigidbody2d.AddForce(target * DampedDrag, ForceMode2D.Force);
+        rigidbody2d.AddTorque(-rigidbody2d.angularVelocity * Mathf.Deg2Rad * DampedDrag, ForceMode2D.Force);
     }
 }
