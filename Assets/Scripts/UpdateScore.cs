@@ -16,9 +16,9 @@ public class UpdateScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (score != PlayerController.CollectedStarsNumber)
+        if (score != PlayerController.Instance.CollectedStarsNumber)
         {
-            score = PlayerController.CollectedStarsNumber;
+            score = PlayerController.Instance.CollectedStarsNumber;
             this.gameObject.GetComponent<Text>().text = score.ToString();
             scorePad.GetComponent<Text>().text = score.ToString();
         }

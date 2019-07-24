@@ -14,16 +14,33 @@ public class PlayerController : MonoBehaviour
     public Animation AnimationPlayer;
     public AnimationClip hitGroundAnim;
     public AnimationClip jumpAnim;
+    public AudioClip hitSnowGround;
     public float AdditionalJumpForceBonus = 1f;
     public float MaxBonusTime = 1f;
+    // 角色AD键调平衡的力矩大小
     public float Torque = 10f;
-    public float Force = 100f;
+    // 角色速度和角速度的阻尼
     public float DampedDrag = 0.5f;
-    public static int CollectedStarsNumber { get; private set; } = 0;
+    /// <summary>
+    /// 收集到的星星数量
+    /// </summary>
+    public int CollectedStarsNumber { get; private set; } = 0;
+    /// <summary>
+    /// 玩家的单例
+    /// </summary>
     public static PlayerController Instance { get; private set; }
+    /// <summary>
+    /// 收集到的星星列表，用于星星跟随
+    /// </summary>
     public List<GameObject> starList = new List<GameObject>();
+    /// <summary>
+    /// 每个星星的间隔
+    /// </summary>
     public float StarInterval = 1f;
     public float StarApproachingTime = 5f;
+
+    // 角色成功转了一圈之后的音效
+    public AudioClip RotateAudio;
     public float rotationAngle = 0f;
     private float prevAngle = 0f;
 
@@ -86,29 +103,38 @@ public class PlayerController : MonoBehaviour
         }
 
         // 统计旋转
-        float dAngle = transform.eulerAngles.z - prevAngle;
-        if (dAngle > 180f)
+        if (!canJump)
         {
-            dAngle -= 360f;
+            float dAngle = transform.eulerAngles.z - prevAngle;
+            if (dAngle > 180f)
+            {
+                dAngle -= 360f;
+            }
+            else if (dAngle < -180f)
+            {
+                dAngle += 360f;
+            }
+            rotationAngle += dAngle;
+            if (rotationAngle >= 320f)
+            {
+                Debug.Log("360 !");
+                Heal();
+                rotationAngle -= 360f;
+                AudioPlayer.PlayAudio(RotateAudio, 0.7f);
+            }
+            else if (rotationAngle <= -320f)
+            {
+                Debug.Log("-360 !");
+                Heal();
+                rotationAngle += 360f;
+                AudioPlayer.PlayAudio(RotateAudio, 0.7f);
+            }
         }
-        else if (dAngle < -180f)
+        else
         {
-            dAngle += 360f;
+            rotationAngle = 0f;
         }
         prevAngle = transform.eulerAngles.z;
-        rotationAngle += dAngle;
-        if (rotationAngle >= 360f)
-        {
-            Debug.Log("360 !");
-            Heal();
-            rotationAngle -= 360f;
-        }
-        else if (rotationAngle <= -360f)
-        {
-            Debug.Log("-360 !");
-            Heal();
-            rotationAngle += 360f;
-        }
     }
 
     /*
@@ -205,6 +231,7 @@ public class PlayerController : MonoBehaviour
         if (!canJump)
         {
             PlayAnim(hitGroundAnim);
+            AudioPlayer.PlayAudio(hitSnowGround, 0.9f);
             pressedTime = Time.time;
             canJump = true;
         }
@@ -216,6 +243,7 @@ public class PlayerController : MonoBehaviour
         float bonus = ChargingBonus.Evaluate(Time.time - pressedTime);
         Debug.Log(string.Format("Time {0} with bonus {1}%", Time.time - pressedTime, bonus * 100));
         rigidbody2d.AddForce(new Vector2(0, 500 * (1 + bonus)));
+        AudioPlayer.PlayAudio(hitSnowGround, 0.9f);
         PlayAnim(jumpAnim);
     }
     // 长按增加角色跳跃力度
