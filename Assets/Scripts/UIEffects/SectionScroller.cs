@@ -17,9 +17,9 @@ public class SectionScroller : MonoBehaviour
      * Use the Transform component attached to the section game object and
      * translate it based on delta time.
      */
-    private void Update()
+    private void FixedUpdate()
     {
         currentSpeed = Speed.Evaluate(Time.time - startTime);
-        transform.Translate(currentSpeed * Vector2.left * Time.deltaTime);
+        transform.Translate(currentSpeed * Vector2.left * Time.fixedDeltaTime);
     }
 }
