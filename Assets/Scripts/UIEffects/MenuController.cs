@@ -32,14 +32,4 @@ public class MenuController : MonoBehaviour
     {
         Application.Quit();
     }
-
-    public void EnterLevel2()
-    {
-        SceneManager.LoadScene("Level2");
-    }
-
-    public void EnterMenu()
-    {
-        SceneManager.LoadScene("Menu");
-    }
 }
