@@ -6,6 +6,7 @@ public class CollectableStar : MonoBehaviour
 {
     public bool IsCollected { get; private set; } = false;
     public Collider2D[] colliders;
+    public AudioClip CollectedPromptAudioClip;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -21,6 +22,7 @@ public class CollectableStar : MonoBehaviour
 
             // Collect this star
             PlayerController.Instance.CollectStar(this);
+            AudioPlayer.PlayAudio(CollectedPromptAudioClip, 0.6f);
         }
     }
 }
