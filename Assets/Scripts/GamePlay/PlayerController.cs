@@ -19,15 +19,7 @@ public class PlayerController : MonoBehaviour
     public float Torque = 10f;
     public float Force = 100f;
     public float DampedDrag = 0.5f;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public int CollectedStarsNumber { get; private set; } = 0;
-=======
     public static int CollectedStarsNumber { get; private set; } = 0;
->>>>>>> parent of 9295bfc... Delete PlayerController
-=======
-    public int CollectedStarsNumber { get; private set; } = 0;
->>>>>>> parent of 9761b2c... Update HUD
     public static PlayerController Instance { get; private set; }
     public List<GameObject> starList = new List<GameObject>();
     public float StarInterval = 1f;
