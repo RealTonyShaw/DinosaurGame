@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidbody2d;
     private int health;
     private bool canJump = false;
+    /// <summary>
+    /// 从死亡到加载结束界面的延迟
+    /// </summary>
+    public float LoadDelay = 4f;
     public Animation AnimationPlayer;
     public AnimationClip hitGroundAnim;
     public AnimationClip jumpAnim;
@@ -78,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (canJump)
+        if (canJump && !IsEnd)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -95,10 +100,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float torque = -Input.GetAxis("Horizontal") * Torque;
-        rigidbody2d.AddTorque(torque, ForceMode2D.Force);
-        RestrainXAxis(Time.fixedDeltaTime);
-
         // 星星跟随
         if (CollectedStarsNumber > 0)
         {
@@ -109,6 +110,14 @@ public class PlayerController : MonoBehaviour
                 StarFollow(starList[i].transform, starList[i - 1].transform, Time.fixedDeltaTime);
             }
         }
+
+
+        if (IsEnd)
+            return;
+        float torque = -Input.GetAxis("Horizontal") * Torque;
+        rigidbody2d.AddTorque(torque, ForceMode2D.Force);
+        RestrainXAxis(Time.fixedDeltaTime);
+
 
         // 统计旋转
         if (!canJump)
@@ -175,6 +184,8 @@ public class PlayerController : MonoBehaviour
      */
     public void Damage()
     {
+        if (IsEnd)
+            return;
         health -= 1;
         HitStonesNumber++;
         if (health < 1)
@@ -182,12 +193,15 @@ public class PlayerController : MonoBehaviour
             // This method is deprecated.
             //Application.LoadLevel("EndGame");
             // Use SceneManager instead.
-            SceneManager.LoadSceneAsync("EndGame");
+            End();
+            StartCoroutine(DelayedLoad());
         }
     }
 
     public void Damage(int damage)
     {
+        if (IsEnd)
+            return;
         health -= damage;
 
         if (health < 1)
@@ -195,8 +209,15 @@ public class PlayerController : MonoBehaviour
             // This method is deprecated.
             //Application.LoadLevel("EndGame");
             // Use SceneManager instead.
-            SceneManager.LoadSceneAsync("EndGame");
+            End();
+            StartCoroutine(DelayedLoad());
         }
+    }
+
+    IEnumerator DelayedLoad()
+    {
+        yield return new WaitForSeconds(LoadDelay);
+        SceneManager.LoadSceneAsync("EndGame");
     }
 
     public void Heal()
@@ -279,6 +300,17 @@ public class PlayerController : MonoBehaviour
         target.z = 0f;
         rigidbody2d.AddForce(target * DampedDrag, ForceMode2D.Force);
         rigidbody2d.AddTorque(-rigidbody2d.angularVelocity * Mathf.Deg2Rad * DampedDrag, ForceMode2D.Force);
+    }
+    public bool IsEnd { get; private set; } = false;
+    public void End()
+    {
+        IsEnd = true;
+        SectionScroller.Instance.Stop();
+    }
+
+    public void Pass()
+    {
+        IsEnd = true;
     }
 
     #endregion
