@@ -8,12 +8,17 @@ public class TerminalTrigger : MonoBehaviour
     public GameObject player;
     public GameObject LevelPassMenu;
     public static TerminalTrigger Instance { get; private set; }
+    public AudioClip PassAudio;
     public bool IsTriggered { get; private set; } = false;
 
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
+        if (player == null)
+        {
+            player = PlayerController.Instance.gameObject;
+        }
     }
 
     // Update is called once per frame
@@ -30,6 +35,7 @@ public class TerminalTrigger : MonoBehaviour
             IsTriggered = true;
             PlayerController.Instance.Pass();
             LevelPassMenu.GetComponent<MenuEnterAnimation>().enabled = true;
+            AudioPlayer.PlayAudio(PassAudio, 0.8f);
             Destroy(this);
         }
     }
