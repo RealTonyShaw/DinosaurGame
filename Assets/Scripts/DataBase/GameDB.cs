@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Record the statistics of player
+/// </summary>
 public class GameDB : MonoBehaviour
 {
     public static int collectedStars = 0;
