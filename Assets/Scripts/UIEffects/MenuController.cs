@@ -35,11 +35,22 @@ public class MenuController : MonoBehaviour
 
     public void EnterLevel2()
     {
-        SceneManager.LoadScene("Level2");
+        SceneManager.LoadScene("Level 2");
+    }
+
+    public void EnterLevel3()
+    {
+        SceneManager.LoadScene("Level 3");
+    }
+
+    public void GamePass()
+    {
+        SceneManager.LoadScene("Congratulations");
     }
 
     public void EnterMenu()
     {
         SceneManager.LoadScene("Menu");
     }
+
 }
