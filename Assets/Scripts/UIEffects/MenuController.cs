@@ -33,21 +33,33 @@ public class MenuController : MonoBehaviour
         Application.Quit();
     }
 
+    /// <summary>
+    /// Enter Level 2
+    /// </summary>
     public void EnterLevel2()
     {
         SceneManager.LoadScene("Level 2");
     }
 
+    /// <summary>
+    /// Enter Level 3
+    /// </summary>
     public void EnterLevel3()
     {
         SceneManager.LoadScene("Level 3");
     }
 
+    /// <summary>
+    /// Enter Congratulation Scene
+    /// </summary>
     public void GamePass()
     {
         SceneManager.LoadScene("Congratulations");
     }
 
+    /// <summary>
+    /// Go back to Menu
+    /// </summary>
     public void EnterMenu()
     {
         SceneManager.LoadScene("Menu");

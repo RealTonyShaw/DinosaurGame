@@ -16,11 +16,13 @@ public class StarAnimation : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        // Star is becoming bigger when it's too small
         if(gameObject.GetComponent<Transform>().localScale.x < 0)
         {
             rotationSpeed = -rotationSpeed;
         }
 
+        // Star is becoming smaller when it's too large
         if (gameObject.GetComponent<Transform>().localScale.x > maxScale)
         {
             rotationSpeed = -rotationSpeed;

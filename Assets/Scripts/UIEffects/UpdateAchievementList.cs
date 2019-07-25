@@ -9,6 +9,9 @@ public class UpdateAchievementList : MonoBehaviour
     public GameObject crashedStones;
     public GameObject rotationTimes;
 
+    /// <summary>
+    /// Refresh gamer statistics from game database
+    /// </summary>
     public void UpdateAchievements()
     {
         collectedStars.GetComponent<Text>().text = GameDB.collectedStars.ToString();
