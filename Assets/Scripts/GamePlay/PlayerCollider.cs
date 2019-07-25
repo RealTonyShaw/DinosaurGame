@@ -16,6 +16,10 @@ public class PlayerCollider : MonoBehaviour
      */
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.attachedRigidbody == null || other.attachedRigidbody.gameObject.tag != "Player")
+        {
+            return;
+        }
         // Obtain a reference to the Player's PlayerController
         PlayerController playerController =
           other.attachedRigidbody.gameObject.GetComponent<PlayerController>();
