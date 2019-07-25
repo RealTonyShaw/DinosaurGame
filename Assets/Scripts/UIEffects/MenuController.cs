@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// For loading different scenes and quiting the game
@@ -7,6 +8,8 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MenuController : MonoBehaviour
 {
+    public Slider volumeSlider;
+
     /// <summary>
     /// When the button is pressed, load the Game scene.
     /// </summary>
@@ -63,6 +66,14 @@ public class MenuController : MonoBehaviour
     public void EnterMenu()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    /// <summary>
+    /// Set volume.
+    /// </summary>
+    public void SetVolume()
+    {
+        GameDB.volume = volumeSlider.value;
     }
 
 }

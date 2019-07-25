@@ -44,7 +44,7 @@ public class AudioPlayer : MonoBehaviour
         AudioSource s = AvailableAudioSource;
         Instance.sources.Add(s);
         s.clip = clip;
-        s.volume = volume;
+        s.volume = volume * GameDB.volume;
         s.Play();
     }
 
