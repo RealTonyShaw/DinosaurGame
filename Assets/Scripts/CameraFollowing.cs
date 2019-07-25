@@ -23,7 +23,7 @@ public class CameraFollowing : MonoBehaviour
     {
         Ray2D ray = new Ray2D(Player.transform.position, Vector2.down);
         RaycastHit2D hit = Physics2D.Raycast(Player.transform.position, Vector2.down, 100f, terrainMask);
-        float height = hit.distance;
+        float height = hit.collider == null ? 1000f : hit.distance;
         Vector3 target = Player.transform.position;
 
         target.x += Offset.x;
