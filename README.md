@@ -1,5 +1,5 @@
 # Dinosaur Game
-This is an assignment for Interactive Design & Development for Digital Media Course 2019. In this project, we developed a relatively maturer game ( *Mountain Ski* ) based on a simple given game named *Dinosaur Game*.
+This is an assignment for *Interactive Design & Development for Digital Media Course 2019*. In this project, we developed a relatively maturer game ( *Mountain Ski* ) based on a simple given game named *Dinosaur Game*.
 
 ## Contributors
 * [Chell](https://github.com/RealTonyShaw) -  UI Scripts and Design / Drawing Maps / Drawing Part of Icons and Other Prefabs / Shader
