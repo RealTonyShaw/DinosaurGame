@@ -166,10 +166,15 @@ public class PlayerController : MonoBehaviour
         HitGround(other);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        canJump = true;
-    }
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    canJump = true;
+    //}
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    canJump = false;
+    //}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -279,12 +284,12 @@ public class PlayerController : MonoBehaviour
     // 角色起跳，起跳前长按有额外加成
     private void Jump()
     {
-        canJump = false;
         float bonus = ChargingBonus.Evaluate(Time.time - pressedTime);
         Debug.Log(string.Format("Time {0} with bonus {1}%", Time.time - pressedTime, bonus * 100));
         rigidbody2d.AddForce(new Vector2(0, 500 * (1 + bonus)));
         AudioPlayer.PlayAudio(hitSnowGround, 0.9f);
         PlayAnim(jumpAnim);
+        canJump = false;
     }
     // 长按增加角色跳跃力度
 
