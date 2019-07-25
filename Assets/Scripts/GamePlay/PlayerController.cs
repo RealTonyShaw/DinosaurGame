@@ -138,6 +138,7 @@ public class PlayerController : MonoBehaviour
                 rotationAngle -= 360f;
                 AudioPlayer.PlayAudio(RotateAudio, 0.7f);
                 RotationTimes++;
+                GameDB.rotationTimes++;
             }
             else if (rotationAngle <= -320f)
             {
@@ -146,6 +147,7 @@ public class PlayerController : MonoBehaviour
                 rotationAngle += 360f;
                 AudioPlayer.PlayAudio(RotateAudio, 0.7f);
                 RotationTimes++;
+                GameDB.rotationTimes++;
             }
         }
         else
@@ -162,6 +164,11 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         HitGround(other);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        canJump = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -187,6 +194,7 @@ public class PlayerController : MonoBehaviour
             return;
         health -= 1;
         HitStonesNumber++;
+        GameDB.crashedStones++;
         if (health < 1)
         {
             // This method is deprecated.
@@ -240,6 +248,7 @@ public class PlayerController : MonoBehaviour
     public void CollectStar(CollectableStar star)
     {
         CollectedStarsNumber++;
+        GameDB.collectedStars++;
         starList.Add(star.gameObject);
     }
 
@@ -264,8 +273,8 @@ public class PlayerController : MonoBehaviour
             PlayAnim(hitGroundAnim);
             AudioPlayer.PlayAudio(hitSnowGround, 0.9f);
             pressedTime = Time.time;
-            canJump = true;
         }
+        canJump = true;
     }
     // 角色起跳，起跳前长按有额外加成
     private void Jump()
