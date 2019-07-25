@@ -17,18 +17,38 @@ public class SectionScroller : MonoBehaviour
     public float MaxDistance;
     float startTime = 0f;
     float startX;
+    bool isEnd = false;
+    public static SectionScroller Instance { get; private set; }
     private void Start()
     {
+        Instance = this;
         startX = transform.position.x;
         startTime = Time.time;
     }
+
+    public void Stop()
+    {
+        isEnd = true;
+    }
+
+    private void Update()
+    {
+        if (isEnd)
+            return;
+
+        if (startX - transform.position.x > MaxDistance)
+        {
+            isEnd = true;
+        }
+    }
+
     /*
      * Use the Transform component attached to the section game object and
      * translate it based on delta time.
      */
     private void FixedUpdate()
     {
-        if (startX - transform.position.x < MaxDistance)
+        if (!isEnd)
         {
             currentSpeed = Speed.Evaluate(Time.time - startTime);
         }
