@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
     // 角色速度和角速度的阻尼
     public float DampedDrag = 0.5f;
     /// <summary>
+    /// 撞到的石头数量
+    /// </summary>
+    public int HitStonesNumber { get; private set; } = 0;
+    /// <summary>
     /// 收集到的星星数量
     /// </summary>
     public int CollectedStarsNumber { get; private set; } = 0;
@@ -41,6 +45,10 @@ public class PlayerController : MonoBehaviour
 
     // 角色成功转了一圈之后的音效
     public AudioClip RotateAudio;
+    /// <summary>
+    /// 转圈数
+    /// </summary>
+    public int RotationTimes { get; private set; } = 0;
     public float rotationAngle = 0f;
     private float prevAngle = 0f;
 
@@ -121,6 +129,7 @@ public class PlayerController : MonoBehaviour
                 Heal();
                 rotationAngle -= 360f;
                 AudioPlayer.PlayAudio(RotateAudio, 0.7f);
+                RotationTimes++;
             }
             else if (rotationAngle <= -320f)
             {
@@ -128,6 +137,7 @@ public class PlayerController : MonoBehaviour
                 Heal();
                 rotationAngle += 360f;
                 AudioPlayer.PlayAudio(RotateAudio, 0.7f);
+                RotationTimes++;
             }
         }
         else
@@ -166,7 +176,7 @@ public class PlayerController : MonoBehaviour
     public void Damage()
     {
         health -= 1;
-
+        HitStonesNumber++;
         if (health < 1)
         {
             // This method is deprecated.
@@ -175,6 +185,7 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadSceneAsync("EndGame");
         }
     }
+
     public void Damage(int damage)
     {
         health -= damage;
