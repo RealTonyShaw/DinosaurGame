@@ -19,6 +19,7 @@ public class UpdateScore : MonoBehaviour
         if (score != PlayerController.Instance.CollectedStarsNumber)
         {
             score = PlayerController.Instance.CollectedStarsNumber;
+            GameDB.collectedStars++;
             this.gameObject.GetComponent<Text>().text = score.ToString();
             scorePad.GetComponent<Text>().text = score.ToString();
         }

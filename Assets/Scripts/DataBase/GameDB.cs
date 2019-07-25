@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class GameDB : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public static int collectedStars = 0;
+    public static int crashedStones = 0;
+    public static int rotationTimes = 0;
 }
