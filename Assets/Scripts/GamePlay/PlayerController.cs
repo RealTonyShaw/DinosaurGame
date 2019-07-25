@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     /// 从死亡到加载结束界面的延迟
     /// </summary>
     public float LoadDelay = 4f;
+    public AudioClip EndAudio;
     public Animation AnimationPlayer;
     public AnimationClip hitGroundAnim;
     public AnimationClip jumpAnim;
@@ -58,8 +59,6 @@ public class PlayerController : MonoBehaviour
     private float prevAngle = 0f;
 
     public AnimationCurve ChargingBonus;
-    // 玩家与地面允许的最大角度（超过则判为死亡）
-    public const float MAX_SLIP_ANGLE = 75f;
 
     #region 生命周期
 
@@ -305,6 +304,7 @@ public class PlayerController : MonoBehaviour
     public void End()
     {
         IsEnd = true;
+        AudioPlayer.PlayAudio(EndAudio, 0.8f);
         SectionScroller.Instance.Stop();
     }
 
