@@ -17,13 +17,17 @@ public class TimeBasedSceneSwitch : MonoBehaviour
     /// At which time
     /// </summary>
     public float switchTime;
-
+    float startTime;
+    private void Start()
+    {
+        startTime = Time.time;
+    }
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > switchTime)
+        if (Time.time - startTime > switchTime)
         {
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadSceneAsync(sceneName);
         }
     }
 }

@@ -57,7 +57,7 @@ public class MenuController : MonoBehaviour
     /// </summary>
     public void GamePass()
     {
-        SceneManager.LoadScene("Congratulations");
+        SceneManager.LoadSceneAsync("Congratulations");
     }
 
     /// <summary>
