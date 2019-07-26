@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidbody2d;
     private int health;
     private bool canJump = false;
+    public LayerMask terrainMask = ~(1 << 8);
     /// <summary>
     /// 从死亡到加载结束界面的延迟
     /// </summary>
@@ -306,7 +307,25 @@ public class PlayerController : MonoBehaviour
     void RestrainXAxis(float dt)
     {
         Vector3 target = transform.position;
-        target.x = 0f;
+        if (canJump)
+        {
+            Ray2D ray = new Ray2D(transform.position, Vector2.down);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 100f, terrainMask);
+            if (hit.collider != null)
+            {
+                Vector3 fwd = hit.normal;
+                fwd = Quaternion.AngleAxis(90f, Vector3.forward) * fwd;
+                target -= fwd * (transform.position.x / fwd.x);
+            }
+            else
+            {
+                target.x = 0f;
+            }
+        }
+        else
+        {
+            target.x = 0f;
+        }
         transform.position = Vector3.Lerp(transform.position, target, 3f * dt);
         target = -rigidbody2d.velocity;
         target.y = 0f;
